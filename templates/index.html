@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Weather App</title>
+	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="{% static 'mycss.css' %}">
+</head>
+<body>
+	<div class="container text-center w-75 mt-5">
+		<div class="jumbotron-fluid my-auto">
+			<h3 class="display-4">Weather App</h3>
+			<hr class="my-4">
+			<div class="container">	
+				<form action="{% url 'AddCity' %}" method="POST">
+					{% csrf_token %}	
+					<div class="row form-group">
+						<div class="col-md-5 offset-2">
+							<input class="form-control" type="text" autocomplete="off" placeholder="Enter any city Name" name="City">
+
+						</div>
+						 <div class="col-md-2 "><button class="btn btn-dark">Add City</button></div>
+					</div>
+				</form>	
+				{% if message %}
+				<div class="alert {{context_1.message_class}}">{{context_1.message}}</div>
+				{% endif %}
+			</div>
+			<hr class="my-4 bg-light">
+			{% for city_weather in weather_data %}			
+			<div class="container w-25 mt-3">
+					<div class="media p-3">
+				  <img src="http://openweathermap.org/img/w/{{city_weather.icon}}.png" class="mr-3">
+				  <div class="media-body">
+				    <h5 class="title mt-0">{{city_weather.city}}</h5>
+				    {{city_weather.temperature}}&deg; C <br>
+				    {{city_weather.description}}    
+				  </div>
+				  <a href="{% url 'deleteCity' city_weather.city %}"><button type="button" class="close">
+				  <span >&times;</span>
+				</button>
+				</a>
+				</div>
+				
+			</div>
+			{% endfor %}
+		</div>
+	</div>
+</body>
+<footer>
+	<div class="container text-center mt-5">
+		<h6>&copy;2020 WeatherApp snehgour80@gmail.com</h6>
+	</div>
+</footer>
+</html>
